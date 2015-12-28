@@ -3,20 +3,24 @@ window.Program = React.createClass({
   getInitialState() {
     return {program:[]}; 
   },
-  render: function() {
-    var modalTarget = "#program-"+this.props.uid;
-    var modalId = "program-"+this.props.uid;
+  showEdit() {
+    var s = Cookies.get("session");
+    $.get( config.api + s + "/program/" + this.props.uid, function( data ) {
+      $(this.refs.modal).modal();
+    }.bind(this));
 
+  },
+  render: function() {
     return (
     <div>
-      <div className="modal fade" id={modalId} tabIndex="-1" role="dialog">
+      <div className="modal fade" ref="modal"  tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
               <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 className="modal-title" id="myModalLabel">Edit {this.props.name}</h4>
             </div>
-            <div className="modal-body">
+            <div className="modal-body" ref="edit">
               ...
             </div>
             <div className="modal-footer">
@@ -30,7 +34,7 @@ window.Program = React.createClass({
       <div className="panel-default">
         <div className="panel-heading">
           <h3 className="panel-title">{this.props.name}
-            <button type="button" className="btn btn-link" data-toggle="modal" data-target={modalTarget}>
+            <button type="button" className="btn btn-link" onClick={this.showEdit}>
               Edit 
             </button>
           </h3>
@@ -49,7 +53,6 @@ window.Programs = React.createClass({
   componentDidMount: function() {
 
     var s = Cookies.get("session");
-
     $.get( config.api + s + "/programs", { token: session.token}, function( data ) {
       if (this.isMounted()) {
         var data =  {programs:data.response}; 
