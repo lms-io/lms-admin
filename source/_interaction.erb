@@ -1,0 +1,45 @@
+<script type="text/babel">
+window.Interaction = React.createClass({
+  getInitialState() {
+    return {interaction:[]}; 
+  },
+  render: function() {
+    return (
+    <div className="panel-default">
+      <div className="panel-heading">
+        <h3 className="panel-title">{this.props.name}</h3>
+      </div>
+    </div>
+    );
+  }
+});
+
+window.Interactions = React.createClass({
+  getInitialState() {
+    return {interactions:[]}; 
+  },
+  componentDidMount: function() {
+
+    var s = Cookies.get("session");
+
+    $.get( config.api + s + "/interactions", { token: session.token}, function( data ) {
+      if (this.isMounted()) {
+        var data =  {interactions:data.response}; 
+        this.setState(data);
+      }
+    }.bind(this));
+  },
+  render: function() {
+    return (
+        <div>
+        {this.state.interactions.map(function(interaction,i) {
+          return (
+            <Interaction key={interaction.uid} name={interaction.name}/> 
+          );
+        })}
+        </div>
+      );
+  }
+});
+</script>
+
