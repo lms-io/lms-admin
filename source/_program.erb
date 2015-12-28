@@ -4,11 +4,39 @@ window.Program = React.createClass({
     return {program:[]}; 
   },
   render: function() {
+    var modalTarget = "#program-"+this.props.uid;
+    var modalId = "program-"+this.props.uid;
+
     return (
-    <div className="panel-default">
-      <div className="panel-heading">
-        <h3 className="panel-title">{this.props.name}</h3>
+    <div>
+      <div className="modal fade" id={modalId} tabIndex="-1" role="dialog">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 className="modal-title" id="myModalLabel">Edit {this.props.name}</h4>
+            </div>
+            <div className="modal-body">
+              ...
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" className="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <div className="panel-default">
+        <div className="panel-heading">
+          <h3 className="panel-title">{this.props.name}
+            <button type="button" className="btn btn-link" data-toggle="modal" data-target={modalTarget}>
+              Edit 
+            </button>
+          </h3>
+        </div>
+      </div>
+
     </div>
     );
   }
@@ -44,7 +72,7 @@ window.Programs = React.createClass({
               <div className="modal-content">
                 <div className="modal-header">
                   <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h4 className="modal-title" id="myModalLabel">Modal title</h4>
+                  <h4 className="modal-title" id="myModalLabel">Create new Program</h4>
                 </div>
                 <div className="modal-body">
                   ...
@@ -59,7 +87,7 @@ window.Programs = React.createClass({
 
         {this.state.programs.map(function(program,i) {
           return (
-            <Program key={program.uid} name={program.name}/> 
+            <Program key={program.uid} uid={program.uid} name={program.name}/> 
           );
         })}
         </div>
