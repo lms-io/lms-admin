@@ -2,6 +2,10 @@
 title: Welcome to LMS.io 
 ---
 <%= partial "interaction" %>
+<%= partial "user" %>
+<%= partial "lesson" %>
+<%= partial "course" %>
+<%= partial "program" %>
 
 <div className="content" role="main">
   <h1 id="pageHeader">Content</h1>
@@ -12,7 +16,7 @@ title: Welcome to LMS.io
 <script type="text/babel">
 
 ReactDOM.render(
-  <Interactions />, 
+  <Programs />, 
   document.getElementById('pageData')
 );
 </script>

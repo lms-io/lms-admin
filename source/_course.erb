@@ -1,0 +1,45 @@
+<script type="text/babel">
+window.Course = React.createClass({
+  getInitialState() {
+    return {course:[]}; 
+  },
+  render: function() {
+    return (
+    <div className="panel-default">
+      <div className="panel-heading">
+        <h3 className="panel-title">{this.props.name}</h3>
+      </div>
+    </div>
+    );
+  }
+});
+
+window.Courses = React.createClass({
+  getInitialState() {
+    return {courses:[]}; 
+  },
+  componentDidMount: function() {
+
+    var s = Cookies.get("session");
+
+    $.get( config.api + s + "/courses", { token: session.token}, function( data ) {
+      if (this.isMounted()) {
+        var data =  {courses:data.response}; 
+        this.setState(data);
+      }
+    }.bind(this));
+  },
+  render: function() {
+    return (
+        <div>
+        {this.state.courses.map(function(course,i) {
+          return (
+            <Course key={course.uid} name={course.name}/> 
+          );
+        })}
+        </div>
+      );
+  }
+});
+</script>
+

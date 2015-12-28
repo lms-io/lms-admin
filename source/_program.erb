@@ -1,0 +1,45 @@
+<script type="text/babel">
+window.Program = React.createClass({
+  getInitialState() {
+    return {program:[]}; 
+  },
+  render: function() {
+    return (
+    <div className="panel-default">
+      <div className="panel-heading">
+        <h3 className="panel-title">{this.props.name}</h3>
+      </div>
+    </div>
+    );
+  }
+});
+
+window.Programs = React.createClass({
+  getInitialState() {
+    return {programs:[]}; 
+  },
+  componentDidMount: function() {
+
+    var s = Cookies.get("session");
+
+    $.get( config.api + s + "/programs", { token: session.token}, function( data ) {
+      if (this.isMounted()) {
+        var data =  {programs:data.response}; 
+        this.setState(data);
+      }
+    }.bind(this));
+  },
+  render: function() {
+    return (
+        <div>
+        {this.state.programs.map(function(program,i) {
+          return (
+            <Program key={program.uid} name={program.name}/> 
+          );
+        })}
+        </div>
+      );
+  }
+});
+</script>
+

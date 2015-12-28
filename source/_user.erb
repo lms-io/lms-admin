@@ -1,0 +1,45 @@
+<script type="text/babel">
+window.User = React.createClass({
+  getInitialState() {
+    return {user:[]}; 
+  },
+  render: function() {
+    return (
+    <div className="panel-default">
+      <div className="panel-heading">
+        <h3 className="panel-title">{this.props.name}</h3>
+      </div>
+    </div>
+    );
+  }
+});
+
+window.Users = React.createClass({
+  getInitialState() {
+    return {users:[]}; 
+  },
+  componentDidMount: function() {
+
+    var s = Cookies.get("session");
+
+    $.get( config.api + s + "/users", { token: session.token}, function( data ) {
+      if (this.isMounted()) {
+        var data =  {users:data.response}; 
+        this.setState(data);
+      }
+    }.bind(this));
+  },
+  render: function() {
+    return (
+        <div>
+        {this.state.users.map(function(user,i) {
+          return (
+            <User key={user.username} name={user.username}/> 
+          );
+        })}
+        </div>
+      );
+  }
+});
+</script>
+

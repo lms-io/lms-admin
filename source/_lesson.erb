@@ -1,0 +1,45 @@
+<script type="text/babel">
+window.Lesson = React.createClass({
+  getInitialState() {
+    return {lesson:[]}; 
+  },
+  render: function() {
+    return (
+    <div className="panel-default">
+      <div className="panel-heading">
+        <h3 className="panel-title">{this.props.name}</h3>
+      </div>
+    </div>
+    );
+  }
+});
+
+window.Lessons = React.createClass({
+  getInitialState() {
+    return {lessons:[]}; 
+  },
+  componentDidMount: function() {
+
+    var s = Cookies.get("session");
+
+    $.get( config.api + s + "/lessons", { token: session.token}, function( data ) {
+      if (this.isMounted()) {
+        var data =  {lessons:data.response}; 
+        this.setState(data);
+      }
+    }.bind(this));
+  },
+  render: function() {
+    return (
+        <div>
+        {this.state.lessons.map(function(lesson,i) {
+          return (
+            <Lesson key={lesson.uid} name={lesson.name}/> 
+          );
+        })}
+        </div>
+      );
+  }
+});
+</script>
+
