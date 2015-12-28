@@ -6,11 +6,14 @@ window.Program = React.createClass({
   showEdit() {
     var s = Cookies.get("session");
     $.get( config.api + s + "/program/" + this.props.uid, function( data ) {
+      this.setState({edit: "todo-pull all stuff needed for edit"});
       $(this.refs.modal).modal();
     }.bind(this));
 
   },
   render: function() {
+    console.log(this.state.edit);
+    var m = Math.random();
     return (
     <div>
       <div className="modal fade" ref="modal"  tabIndex="-1" role="dialog">
@@ -21,7 +24,7 @@ window.Program = React.createClass({
               <h4 className="modal-title" id="myModalLabel">Edit {this.props.name}</h4>
             </div>
             <div className="modal-body" ref="edit">
-              ...
+              {this.state.edit}
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
@@ -33,7 +36,7 @@ window.Program = React.createClass({
 
       <div className="panel-default">
         <div className="panel-heading">
-          <h3 className="panel-title">{this.props.name}
+          <h3 className="panel-title">{this.props.name} ( {this.state.edit} ) {m}
             <button type="button" className="btn btn-link" onClick={this.showEdit}>
               Edit 
             </button>
